@@ -78,10 +78,8 @@ Route::delete('/listings/{listing}',
 middleware('auth');
 
 // manage Listings
-Route::get('/listings/manage',
-[ListingController::class,'manage'])
-->middleware('auth');
-
+Route::get('/listings/manage', 
+[ListingController::class, 'manage'])->middleware('auth');
 
 // Single listing
 Route::get('/listings/{listing}',

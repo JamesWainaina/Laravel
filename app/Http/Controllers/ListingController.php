@@ -95,9 +95,9 @@ class ListingController extends Controller
 
     //Manage function
 
-    public function manage(){
-        return view('listings.manage',['listings'=>
-        auth()->user()->listings()->get()]);
+    public function manage() {
+        return view('listings.manage', ['listings' =>
+         auth()->user()->listings()->get()]);
     }
     
 }
