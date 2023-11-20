@@ -32,7 +32,7 @@ class ListingController extends Controller
 
     //store Listing data
     public function store(Request $request){
-        dd($request->file('logo'));
+        
         $formFields= $request->validate([
             'title'=>'required',
             'company'=>['required', Rule::unique('listings',
@@ -44,14 +44,60 @@ class ListingController extends Controller
             'description' => 'required'
         ]);
 
-        // if($request->hasFile('logo')){
-        //     $formFields['logo'] = $request->file('logo')
-        //     ->store('logos','public');
-        // }
+        if($request->hasFile('logo')){
+            $formFields['logo'] = $request->file('logo')->store('logos',
+        'public');
+        }
+
+        $formFields['user_id']= auth()->id();
 
         Listing::create($formFields);
         
         return redirect('/') -> with('message',
         'Listing created successfully!');
     }
+    //show listing form
+
+    public function edit(Listing $listing){
+        return view('listings.edit',['listing'=>$listing]);
+    }
+
+    //update listing data
+    public function update(Request $request, Listing $listing){
+        
+        $formFields= $request->validate([
+            'title'=>'required',
+            'company'=>'required',
+            'location'=>'required',
+            'website'=>'required',
+            'email'=>['required','email'],
+            'tags'=> 'required',
+            'description' => 'required'
+        ]);
+
+        if($request->hasFile('logo')){
+            $formFields['logo'] = $request->file('logo')->store('logos',
+        'public');
+        }
+
+        $listing->update($formFields);
+        
+        return back() -> with('message',
+        'Listing created successfully!');
+    }
+
+    //Delete listing
+
+    public function destroy(Listing $listing){
+        $listing->delete();
+        return redirect('/')->with('message','Listing Deleted successfully');
+    }
+
+    //Manage function
+
+    public function manage(){
+        return view('listings.manage',['listings'=>
+        auth()->user()->listings()->get()]);
+    }
+    
 }

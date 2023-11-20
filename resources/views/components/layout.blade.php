@@ -28,22 +28,50 @@
         </script>
         <title>LaraGigs | Find Laravel Jobs & Projects</title>
     </head>
+
     <body class="mb-48">
         <nav class="flex justify-between items-center mb-4">
             <a href="/"><img class="w-24" src="{{asset('images/logo.png')}}" alt="" class="logo"
             /></a>
             <ul class="flex space-x-6 mr-6 text-lg">
+                @auth
                 <li>
-                    <a href="register.html" class="hover:text-laravel"
+                    <span class="font-bold uppercase">
+                        Welcome {{auth()->user()->name}}
+                    </span>
+                </li>
+                <li>
+                    <a href="/listing/manage" 
+                    class="hover:text-laravel"
+                        ><i class="fa-solid fa-gear"></i>
+                        Manage Listing</a>
+                </li>
+                <li>
+                    <form action="/logout" 
+                        class="inline" method="POST">
+                    @csrf  
+                        <button type="submit">
+                            <i class="fa-solid fa-door-closed"></i>
+                            Logout
+                        </button>                    
+                    </form>
+                </li>
+                @else
+                
+                
+                <li>
+                    <a href="/register" class="hover:text-laravel"
                         ><i class="fa-solid fa-user-plus"></i> Register</a
                     >
                 </li>
                 <li>
-                    <a href="login.html" class="hover:text-laravel"
+                    <a href="/login" class="hover:text-laravel"
                         ><i class="fa-solid fa-arrow-right-to-bracket"></i>
-                        Login</a
-                    >
+                        Login</a>
                 </li>
+                @endauth
+                
+
             </ul>
         </nav>
         <main>
@@ -56,8 +84,8 @@
         <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
 
         <a href="/listings/create"
-            class="absolute top-1/3 right-10 bg-black text-white py-2 px-5"
-            >Post Job</a
+            class="absolute top-1/3 right-10 bg-black text-white py-2 px-5">
+            Post Job</a
         >
         </footer>
 
